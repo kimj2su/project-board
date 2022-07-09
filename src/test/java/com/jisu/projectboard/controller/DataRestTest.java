@@ -1,5 +1,6 @@
 package com.jisu.projectboard.controller;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //@WebMvcTest //슬라이스 테스트 컨트롤러 이외의 빈들을 로드하지 않는다.
+@Disabled("Spring Data Rest 통합테스트틑 불필요하므로 제외시킴")
 @DisplayName("Data Rest - API 테스트")
 @Transactional
 @AutoConfigureMockMvc
