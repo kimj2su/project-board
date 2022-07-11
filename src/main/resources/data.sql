@@ -1,3 +1,6 @@
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
+    ('jisu', 'asdf1234', 'jisu', 'jisu3316@naver.com', 'I am jisu.', now(), 'jisu', now(), 'jisu');
+
 insert into article
 (title, content, hashtag, created_by, modified_by, modified_at, created_at)
     values
