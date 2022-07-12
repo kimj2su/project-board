@@ -20,6 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Queryds
         bindings.including(root.title, root.content, root.hashtag, root.createdAt, root.createdBy);
         bindings.bind(root.title).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.hashtag).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.createdAt).first(DateTimeExpression::eq);
         bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
     }
