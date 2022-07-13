@@ -23,6 +23,7 @@ class JpaRepositoryTest {
     private final ArticleCommentRepository articleCommentRepository;
     private final UserAccountRepository userAccountRepository;
 
+
     public JpaRepositoryTest(@Autowired ArticleRepository articleRepository,
                              @Autowired ArticleCommentRepository articleCommentRepository,
                              @Autowired UserAccountRepository userAccountRepository) {
@@ -41,7 +42,7 @@ class JpaRepositoryTest {
 
 
         //then
-        assertThat(articles).isNotNull().hasSize(25);
+        assertThat(articles).isNotNull().hasSize(123);
     }
 
     @DisplayName("insert 테스트")
