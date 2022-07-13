@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "content"),
         @Index(columnList = "createdAt"),
@@ -34,6 +34,7 @@ public class ArticleComment extends AuditingFields{
 
 
     protected ArticleComment() {}
+
 
     private ArticleComment(Article article, UserAccount userAccount,String content) {
         this.article = article;

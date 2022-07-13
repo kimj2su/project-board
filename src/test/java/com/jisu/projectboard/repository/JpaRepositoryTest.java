@@ -23,11 +23,10 @@ class JpaRepositoryTest {
     private final ArticleCommentRepository articleCommentRepository;
     private final UserAccountRepository userAccountRepository;
 
-    public JpaRepositoryTest(
-            @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository,
-            @Autowired UserAccountRepository userAccountRepository
-    ) {
+
+    public JpaRepositoryTest(@Autowired ArticleRepository articleRepository,
+                             @Autowired ArticleCommentRepository articleCommentRepository,
+                             @Autowired UserAccountRepository userAccountRepository) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
         this.userAccountRepository = userAccountRepository;
@@ -51,11 +50,11 @@ class JpaRepositoryTest {
     void givenTestData_whenInserting_thenWorksFine(){
         //given
         long count = articleRepository.count();
-        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("jisu", "pw", null, null, null));
         Article article = Article.of(userAccount, "new article", "new content", "#spring");
 
         //when
-        Article savedArticle= articleRepository.save(article);
+        articleRepository.save(article);
 
         //then
         assertThat(articleRepository.count()).isEqualTo(count+1);
