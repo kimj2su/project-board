@@ -1,11 +1,14 @@
 package com.jisu.projectboard.dto;
 
 import com.jisu.projectboard.domain.Article;
+import com.jisu.projectboard.domain.UserAccount;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class ArticleDto {
     private final Long id;
     private final UserAccountDto userAccountDto;
@@ -16,6 +19,10 @@ public class ArticleDto {
     private final String createdBy;
     private final LocalDateTime modifiedAt;
     private final String modifiedBy;
+
+    public static ArticleDto of(UserAccountDto userAccountDto, String title, String content, String hashtag) {
+        return new ArticleDto(null, userAccountDto, title, content, hashtag, null, null, null, null);
+    }
 
     public static ArticleDto of(Long id, UserAccountDto userAccountDto, String title, String content, String hashtag, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
         return new ArticleDto(id, userAccountDto, title, content, hashtag, createdAt, createdBy, modifiedAt, modifiedBy);
@@ -35,7 +42,7 @@ public class ArticleDto {
         );
     }
 
-    public Article toEntity() {
+    public Article toEntity(UserAccount userAccount) {
         return Article.of(
                 userAccountDto.toEntity(),
                 title,
@@ -43,4 +50,5 @@ public class ArticleDto {
                 hashtag
         );
     }
+
 }

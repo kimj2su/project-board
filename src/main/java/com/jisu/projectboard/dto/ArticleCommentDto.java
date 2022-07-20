@@ -2,12 +2,14 @@ package com.jisu.projectboard.dto;
 
 import com.jisu.projectboard.domain.Article;
 import com.jisu.projectboard.domain.ArticleComment;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class ArticleCommentDto {
     private final Long id;
     private final Long articleId;
