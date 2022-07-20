@@ -1,6 +1,7 @@
 package com.jisu.projectboard.dto;
 
 import com.jisu.projectboard.domain.Article;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
 public class ArticleWithCommentsDto {
 
     private final Long id;

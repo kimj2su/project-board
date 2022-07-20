@@ -149,6 +149,7 @@ Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat 
 
 Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.', '#turquoise', 'Monah',
         'Alexandro', '2021-08-25 08:42:32', '2021-06-24 17:50:44'),
+
        ('jisu', 'Pellentesque viverra pede ac diam.',
         'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
         '#fuscia', 'Tadeas', 'Lynnelle', '2021-04-16 16:05:00', '2021-11-18 17:42:45'),

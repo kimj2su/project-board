@@ -1,4 +1,4 @@
-package com.jisu.projectboard.domain.type;
+package com.jisu.projectboard.domain.constant;
 
 import lombok.Getter;
 
