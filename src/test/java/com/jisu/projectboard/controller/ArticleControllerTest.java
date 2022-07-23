@@ -1,6 +1,5 @@
 package com.jisu.projectboard.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jisu.projectboard.config.SecurityConfig;
 import com.jisu.projectboard.domain.constant.FormStatus;
 import com.jisu.projectboard.domain.constant.SearchType;
