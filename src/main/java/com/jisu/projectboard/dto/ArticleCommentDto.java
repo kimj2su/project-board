@@ -3,28 +3,23 @@ package com.jisu.projectboard.dto;
 import com.jisu.projectboard.domain.Article;
 import com.jisu.projectboard.domain.ArticleComment;
 import com.jisu.projectboard.domain.UserAccount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-public class ArticleCommentDto {
-    private final Long id;
-    private final Long articleId;
-    private final UserAccountDto userAccountDto;
-    private final String content;
-    private final LocalDateTime createdAt;
-    private final String createdBy;
-    private final LocalDateTime modifiedAt;
-    private final String modifiedBy;
+public record ArticleCommentDto(
+        Long id,
+        Long articleId,
+        UserAccountDto userAccountDto,
+        String content,
+        LocalDateTime createdAt,
+        String createdBy,
+        LocalDateTime modifiedAt,
+        String modifiedBy
+) {
 
     public static ArticleCommentDto of(Long articleId, UserAccountDto userAccountDto, String content) {
         return new ArticleCommentDto(null, articleId, userAccountDto, content, null, null, null, null);
     }
-
     public static ArticleCommentDto of(Long id, Long articleId, UserAccountDto userAccountDto, String content, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
         return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, createdBy, modifiedAt, modifiedBy);
     }
@@ -49,4 +44,5 @@ public class ArticleCommentDto {
                 content
         );
     }
+
 }

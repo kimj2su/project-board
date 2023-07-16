@@ -1,6 +1,5 @@
 package com.jisu.projectboard.repository;
 
-import com.jisu.projectboard.config.JpaConfig;
 import com.jisu.projectboard.domain.Article;
 import com.jisu.projectboard.domain.UserAccount;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +12,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("JPA 연결 테스트")
 @Import(JpaRepositoryTest.TestJpaConfig.class)
@@ -56,7 +54,7 @@ class JpaRepositoryTest {
         //given
         long count = articleRepository.count();
         UserAccount userAccount = userAccountRepository.save(UserAccount.of("jisu", "pw", null, null, null));
-        Article article = Article.of(userAccount, "new article", "new content", "#spring");
+        Article article = Article.of(userAccount, "new article", "new content");
 
         //when
         articleRepository.save(article);
@@ -71,7 +69,7 @@ class JpaRepositoryTest {
         //given
         Article findArticle = articleRepository.findById(1L).orElseThrow();
         String updatedHashtag = "#springboot";
-        findArticle.setHashtag(updatedHashtag);
+
         //when
         Article savedArticle= articleRepository.saveAndFlush(findArticle);
         //update쿼리 보기위해 flush해줌

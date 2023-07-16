@@ -1,28 +1,30 @@
 package com.jisu.projectboard.dto.request;
 
 import com.jisu.projectboard.dto.ArticleDto;
+import com.jisu.projectboard.dto.HashtagDto;
 import com.jisu.projectboard.dto.UserAccountDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class ArticleRequest {
+import java.util.Set;
 
-    private String title;
-    private String content;
-    private String hashtag;
+public record ArticleRequest(
+        String title,
+        String content
+) {
 
-    public static ArticleRequest of(String title, String content, String hashtag) {
-        return new ArticleRequest(title, content, hashtag);
+    public static ArticleRequest of(String title, String content) {
+        return new ArticleRequest(title, content);
     }
 
     public ArticleDto toDto(UserAccountDto userAccountDto) {
+        return toDto(userAccountDto, null);
+    }
+
+    public ArticleDto toDto(UserAccountDto userAccountDto, Set<HashtagDto> hashtagDtos) {
         return ArticleDto.of(
                 userAccountDto,
                 title,
                 content,
-                hashtag
+                hashtagDtos
         );
     }
 }

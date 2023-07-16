@@ -49,7 +49,7 @@ public class ArticleController {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         modelMap.addAttribute("article", article);
-        modelMap.addAttribute("articleComments", article.getArticleCommentResponse());
+        modelMap.addAttribute("articleComments", article.articleCommentsResponse());
         modelMap.addAttribute("totalCount", articleService.getArticleCount());
         return "articles/detail";
     }

@@ -2,30 +2,29 @@ package com.jisu.projectboard.dto;
 
 import com.jisu.projectboard.domain.Article;
 import com.jisu.projectboard.domain.UserAccount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
-public class ArticleDto {
-    private final Long id;
-    private final UserAccountDto userAccountDto;
-    private final String title;
-    private final String content;
-    private final String hashtag;
-    private final LocalDateTime createdAt;
-    private final String createdBy;
-    private final LocalDateTime modifiedAt;
-    private final String modifiedBy;
+public record ArticleDto(
+        Long id,
+        UserAccountDto userAccountDto,
+        String title,
+        String content,
+        Set<HashtagDto> hashtagDtos,
+        LocalDateTime createdAt,
+        String createdBy,
+        LocalDateTime modifiedAt,
+        String modifiedBy
+) {
 
-    public static ArticleDto of(UserAccountDto userAccountDto, String title, String content, String hashtag) {
-        return new ArticleDto(null, userAccountDto, title, content, hashtag, null, null, null, null);
+    public static ArticleDto of(UserAccountDto userAccountDto, String title, String content, Set<HashtagDto> hashtagDtos) {
+        return new ArticleDto(null, userAccountDto, title, content, hashtagDtos, null, null, null, null);
     }
 
-    public static ArticleDto of(Long id, UserAccountDto userAccountDto, String title, String content, String hashtag, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
-        return new ArticleDto(id, userAccountDto, title, content, hashtag, createdAt, createdBy, modifiedAt, modifiedBy);
+    public static ArticleDto of(Long id, UserAccountDto userAccountDto, String title, String content, Set<HashtagDto> hashtagDtos, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
+        return new ArticleDto(id, userAccountDto, title, content, hashtagDtos, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
     public static ArticleDto from(Article entity) {
@@ -34,21 +33,21 @@ public class ArticleDto {
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getHashtag(),
+                entity.getHashtags().stream()
+                        .map(HashtagDto::from)
+                        .collect(Collectors.toUnmodifiableSet())
+                ,
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
                 entity.getModifiedBy()
         );
     }
-
     public Article toEntity(UserAccount userAccount) {
         return Article.of(
-                userAccountDto.toEntity(),
+                userAccount,
                 title,
-                content,
-                hashtag
+                content
         );
     }
-
 }

@@ -2,8 +2,10 @@ package com.jisu.projectboard.service;
 
 import com.jisu.projectboard.domain.Article;
 import com.jisu.projectboard.domain.ArticleComment;
+import com.jisu.projectboard.domain.Hashtag;
 import com.jisu.projectboard.domain.UserAccount;
 import com.jisu.projectboard.dto.ArticleCommentDto;
+import com.jisu.projectboard.dto.HashtagDto;
 import com.jisu.projectboard.dto.UserAccountDto;
 import com.jisu.projectboard.repository.ArticleCommentRepository;
 import com.jisu.projectboard.repository.ArticleRepository;
@@ -19,6 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,16 +62,16 @@ class ArticleCommentServiceTest {
     void givenArticleCommentInfo_whenSavingArticleComment_thenSavesArticleComment() {
         // Given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
-        given(articleRepository.getReferenceById(dto.getArticleId())).willReturn(createArticle());
-        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId())).willReturn(createUserAccount());
+        given(articleRepository.getReferenceById(dto.articleId())).willReturn(createArticle());
+        given(userAccountRepository.getReferenceById(dto.userAccountDto().userId())).willReturn(createUserAccount());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null);
 
         // When
         sut.saveArticleComment(dto);
 
         // Then
-        then(articleRepository).should().getReferenceById(dto.getArticleId());
-        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getUserId());
+        then(articleRepository).should().getReferenceById(dto.articleId());
+        then(userAccountRepository).should().getReferenceById(dto.userAccountDto().userId());
         then(articleCommentRepository).should().save(any(ArticleComment.class));
     }
 
@@ -77,13 +80,13 @@ class ArticleCommentServiceTest {
     void givenNonexistentArticle_whenSavingArticleComment_thenLogsSituationAndDoesNothing() {
         // Given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
-        given(articleRepository.getReferenceById(dto.getArticleId())).willThrow(EntityNotFoundException.class);
+        given(articleRepository.getReferenceById(dto.articleId())).willThrow(EntityNotFoundException.class);
 
         // When
         sut.saveArticleComment(dto);
 
         // Then
-        then(articleRepository).should().getReferenceById(dto.getArticleId());
+        then(articleRepository).should().getReferenceById(dto.articleId());
         then(userAccountRepository).shouldHaveNoInteractions();
         then(articleCommentRepository).shouldHaveNoInteractions();
     }
@@ -96,7 +99,7 @@ class ArticleCommentServiceTest {
         String updatedContent = "댓글";
         ArticleComment articleComment = createArticleComment(oldContent);
         ArticleCommentDto dto = createArticleCommentDto(updatedContent);
-        given(articleCommentRepository.getReferenceById(dto.getId())).willReturn(articleComment);
+        given(articleCommentRepository.getReferenceById(dto.id())).willReturn(articleComment);
 
         // When
         sut.updateArticleComment(dto);
@@ -105,7 +108,7 @@ class ArticleCommentServiceTest {
         assertThat(articleComment.getContent())
                 .isNotEqualTo(oldContent)
                 .isEqualTo(updatedContent);
-        then(articleCommentRepository).should().getReferenceById(dto.getId());
+        then(articleCommentRepository).should().getReferenceById(dto.id());
     }
 
     @DisplayName("없는 댓글 정보를 수정하려고 하면, 경고 로그를 찍고 아무 것도 안 한다.")
@@ -113,13 +116,13 @@ class ArticleCommentServiceTest {
     void givenNonexistentArticleComment_whenUpdatingArticleComment_thenLogsWarningAndDoesNothing() {
         // Given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
-        given(articleCommentRepository.getReferenceById(dto.getId())).willThrow(EntityNotFoundException.class);
+        given(articleCommentRepository.getReferenceById(dto.id())).willThrow(EntityNotFoundException.class);
 
         // When
         sut.updateArticleComment(dto);
 
         // Then
-        then(articleCommentRepository).should().getReferenceById(dto.getId());
+        then(articleCommentRepository).should().getReferenceById(dto.id());
     }
 
     @DisplayName("댓글 ID를 입력하면, 댓글을 삭제한다.")
@@ -167,7 +170,7 @@ class ArticleCommentServiceTest {
 
     private ArticleComment createArticleComment(String content) {
         return ArticleComment.of(
-                Article.of(createUserAccount(), "title", "content", "hashtag"),
+                Article.of(createUserAccount(), "title", "content"),
                 createUserAccount(),
                 content
         );
@@ -184,11 +187,17 @@ class ArticleCommentServiceTest {
     }
 
     private Article createArticle() {
-        return Article.of(
+        Article article = Article.of(
                 createUserAccount(),
                 "title",
-                "content",
-                "#java"
-        );
+                "content"
+                );
+        article.addHashtags(Set.of(createHashtag(article)));
+
+        return article;
+    }
+
+    private Hashtag createHashtag(Article article) {
+        return Hashtag.of("java");
     }
 }

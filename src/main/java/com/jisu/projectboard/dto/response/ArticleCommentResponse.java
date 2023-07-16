@@ -1,40 +1,35 @@
 package com.jisu.projectboard.dto.response;
 
 import com.jisu.projectboard.dto.ArticleCommentDto;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
-public class ArticleCommentResponse {
-
-    private final Long id;
-    private final String content;
-    private final LocalDateTime createdAt;
-    private final String email;
-    private final String nickname;
-    private final String userId;
-
+public record ArticleCommentResponse(
+        Long id,
+        String content,
+        LocalDateTime createdAt,
+        String email,
+        String nickname,
+        String userId
+) {
 
     public static ArticleCommentResponse of(Long id, String content, LocalDateTime createdAt, String email, String nickname, String userId) {
         return new ArticleCommentResponse(id, content, createdAt, email, nickname, userId);
     }
 
     public static ArticleCommentResponse from(ArticleCommentDto dto) {
-
-        String nickname = dto.getUserAccountDto().getNickname();
-
+        String nickname = dto.userAccountDto().nickname();
         if (nickname == null || nickname.isBlank()) {
-            nickname = dto.getUserAccountDto().getUserId();
+            nickname = dto.userAccountDto().userId();
         }
 
         return new ArticleCommentResponse(
-                dto.getId(),
-                dto.getContent(),
-                dto.getCreatedAt(),
-                dto.getUserAccountDto().getEmail(),
+                dto.id(),
+                dto.content(),
+                dto.createdAt(),
+                dto.userAccountDto().email(),
                 nickname,
-                dto.getUserAccountDto().getUserId()
+                dto.userAccountDto().userId()
         );
     }
+
 }

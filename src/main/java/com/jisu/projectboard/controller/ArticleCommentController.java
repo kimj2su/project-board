@@ -1,13 +1,11 @@
 package com.jisu.projectboard.controller;
 
-import com.jisu.projectboard.dto.UserAccountDto;
 import com.jisu.projectboard.dto.request.ArticleCommentRequest;
 import com.jisu.projectboard.dto.security.BoardPrincipal;
 import com.jisu.projectboard.service.ArticleCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +20,7 @@ public class ArticleCommentController {
     @PostMapping("/new")
     public String postNewArticleComment(@AuthenticationPrincipal BoardPrincipal boardPrincipal, ArticleCommentRequest articleCommentRequest) {
         articleCommentService.saveArticleComment(articleCommentRequest.toDto(boardPrincipal.toDto()));
-        return "redirect:/articles/" + articleCommentRequest.getArticleId();
+        return "redirect:/articles/" + articleCommentRequest.articleId();
     }
 
     @PostMapping("/{commentId}/delete")

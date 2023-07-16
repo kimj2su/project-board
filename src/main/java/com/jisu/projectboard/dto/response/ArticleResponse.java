@@ -1,38 +1,42 @@
 package com.jisu.projectboard.dto.response;
 
+
 import com.jisu.projectboard.dto.ArticleDto;
-import lombok.Data;
+import com.jisu.projectboard.dto.HashtagDto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Data
-public class ArticleResponse {
+public record ArticleResponse(
+        Long id,
+        String title,
+        String content,
+        Set<String> hashtags,
+        LocalDateTime createdAt,
+        String email,
+        String nickname
+) {
 
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String hashtag;
-    private final LocalDateTime createdAt;
-    private final String email;
-    private final String nickname;
-
-    public static ArticleResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname) {
-        return new ArticleResponse(id, title, content, hashtag, createdAt, email, nickname);
+    public static ArticleResponse of(Long id, String title, String content, Set<String> hashtags, LocalDateTime createdAt, String email, String nickname) {
+        return new ArticleResponse(id, title, content, hashtags, createdAt, email, nickname);
     }
 
     public static ArticleResponse from(ArticleDto dto) {
-        String nickname = dto.getUserAccountDto().getNickname();
+        String nickname = dto.userAccountDto().nickname();
         if (nickname == null || nickname.isBlank()) {
-            nickname = dto.getUserAccountDto().getUserId();
+            nickname = dto.userAccountDto().userId();
         }
-
         return new ArticleResponse(
-                dto.getId(),
-                dto.getTitle(),
-                dto.getContent(),
-                dto.getHashtag(),
-                dto.getCreatedAt(),
-                dto.getUserAccountDto().getEmail(),
+                dto.id(),
+                dto.title(),
+                dto.content(),
+                dto.hashtagDtos().stream()
+                        .map(HashtagDto::hashtagName)
+                        .collect(Collectors.toUnmodifiableSet())
+                ,
+                dto.createdAt(),
+                dto.userAccountDto().email(),
                 nickname
         );
     }

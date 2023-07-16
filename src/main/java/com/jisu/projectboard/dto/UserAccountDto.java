@@ -1,24 +1,20 @@
 package com.jisu.projectboard.dto;
 
 import com.jisu.projectboard.domain.UserAccount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-public class UserAccountDto {
-
-    private final String userId;
-    private final String userPassword;
-    private final String email;
-    private final String nickname;
-    private final String memo;
-    private final LocalDateTime createdAt;
-    private final String createdBy;
-    private final LocalDateTime modifiedAt;
-    private final String modifiedBy;
+public record UserAccountDto(
+        String userId,
+        String userPassword,
+        String email,
+        String nickname,
+        String memo,
+        LocalDateTime createdAt,
+        String createdBy,
+        LocalDateTime modifiedAt,
+        String modifiedBy
+) {
 
     public static UserAccountDto of(String userId, String userPassword, String email, String nickname, String memo) {
         return new UserAccountDto(userId, userPassword, email, nickname, memo, null, null, null, null);
