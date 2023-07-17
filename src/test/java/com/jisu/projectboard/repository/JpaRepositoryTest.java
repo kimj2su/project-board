@@ -1,6 +1,7 @@
 package com.jisu.projectboard.repository;
 
 import com.jisu.projectboard.domain.Article;
+import com.jisu.projectboard.domain.Hashtag;
 import com.jisu.projectboard.domain.UserAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,17 +67,21 @@ class JpaRepositoryTest {
 
     @DisplayName("update 테스트")
     @Test
-    void givenTestData_whenUpdating_thenWorksFine(){
-        //given
-        Article findArticle = articleRepository.findById(1L).orElseThrow();
-        String updatedHashtag = "#springboot";
+    void givenTestData_whenUpdating_thenWorksFine() {
+        // Given
+        Article article = articleRepository.findById(1L).orElseThrow();
+        Hashtag updatedHashtag = Hashtag.of("springboot");
+        article.clearHashtags();
+        article.addHashtags(Set.of(updatedHashtag));
 
-        //when
-        Article savedArticle= articleRepository.saveAndFlush(findArticle);
-        //update쿼리 보기위해 flush해줌
+        // When
+        Article savedArticle = articleRepository.saveAndFlush(article);
 
-        //then
-        assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updatedHashtag);
+        // Then
+        assertThat(savedArticle.getHashtags())
+                .hasSize(1)
+                .extracting("hashtagName", String.class)
+                .containsExactly(updatedHashtag.getHashtagName());
     }
 
     @DisplayName("delete 테스트")
