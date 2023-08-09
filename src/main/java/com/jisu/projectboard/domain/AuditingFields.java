@@ -27,7 +27,7 @@ public abstract class AuditingFields {
 
     @CreatedBy
     @Column(nullable = false, length = 100, updatable = false)
-    private String createdBy; // 생성자
+    protected String createdBy; // 생성자
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
@@ -36,6 +36,6 @@ public abstract class AuditingFields {
 
     @LastModifiedBy
     @Column(nullable = false, length = 100)
-    private String modifiedBy; // 수정자
+    protected String modifiedBy; // 수정자
 
 }
